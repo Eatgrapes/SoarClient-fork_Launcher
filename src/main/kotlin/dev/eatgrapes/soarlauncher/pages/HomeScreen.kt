@@ -37,7 +37,7 @@ fun HomeScreen() {
     
     LaunchedEffect(Unit) {
         if (ResourceManager.isJava21Installed() && ResourceManager.areMinecraftFilesDownloaded()) {
-            downloadProgress = downloadProgress.copy(state = DownloadState.COMPLETE, message = "准备就绪")
+            downloadProgress = downloadProgress.copy(state = DownloadState.COMPLETE, message = "Ready")
         }
     }
     
@@ -130,9 +130,7 @@ fun HomeScreen() {
         Button(
             onClick = { 
                 if (downloadProgress.state == DownloadState.COMPLETE && !isChecking) {
-                    // 启动逻辑
                 } else if (!isChecking) {
-                    // 每次点击启动时检查版本信息
                     versionCheckComplete = false
                     isChecking = true
                 }
