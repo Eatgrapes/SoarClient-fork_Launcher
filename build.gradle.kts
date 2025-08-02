@@ -19,7 +19,8 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
     
-
+    implementation("org.apache.commons:commons-compress:1.26.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     
     testImplementation(kotlin("test"))
 }

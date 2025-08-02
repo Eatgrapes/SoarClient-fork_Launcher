@@ -136,7 +136,6 @@ fun main() = application {
                                     }
                             )
 
-    
                             Row(
                                 modifier = Modifier.align(Alignment.TopEnd)
                                     .padding(top = 12.dp, end = 12.dp)
@@ -169,7 +168,6 @@ fun main() = application {
                                 }
                             }
 
-    
                             Box(
                                 modifier = Modifier.fillMaxSize()
                                     .padding(bottom = 80.dp)
@@ -185,7 +183,6 @@ fun main() = application {
                                     )
                                 }
                             }
-
 
                             NavigationBar(
                                 modifier = Modifier

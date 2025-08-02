@@ -27,7 +27,6 @@ object TranslationManager {
                         ?.filter { it.extension == "lang" }
                         ?.mapTo(languages) { it.nameWithoutExtension }
                 } else if (url.protocol == "jar") {
-    
                     val jarConnection = url.openConnection()
                     val jarFile = (jarConnection as? java.net.JarURLConnection)?.jarFile
                     jarFile?.entries()?.toList()
