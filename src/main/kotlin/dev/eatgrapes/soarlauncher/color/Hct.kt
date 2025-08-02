@@ -21,7 +21,6 @@ data class Hct(
             val g = ((argb shr 8) and 0xFF) / 255.0
             val b = (argb and 0xFF) / 255.0
 
-            // 简化的RGB到HCT转换
             val max = maxOf(r, g, b)
             val min = minOf(r, g, b)
             val delta = max - min
