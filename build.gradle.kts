@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "2.1.21"
     id("org.jetbrains.compose") version "1.6.11"
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "dev.eatgrapes.soarlauncher"
@@ -42,6 +43,21 @@ compose.desktop {
             "-Dskiko.render.api=OPENGL",
             "-Dskiko.fallback.render.api=SOFTWARE"
         )
+    }
+}
+
+tasks.shadowJar {
+    archiveBaseName.set("SoarClient-fork_Launcher")
+    archiveClassifier.set("all")
+    archiveVersion.set("1.0-SNAPSHOT")
+    manifest {
+        attributes["Main-Class"] = "dev.eatgrapes.soarlauncher.MainKt"
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "dev.eatgrapes.soarlauncher.MainKt"
     }
 }
 
