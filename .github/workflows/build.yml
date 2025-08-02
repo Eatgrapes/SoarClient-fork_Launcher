@@ -41,6 +41,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
+    - name: Build shadow jar
+      run: ./gradlew shadowJar
+
     - name: Run tests
       run: ./gradlew test
 
@@ -50,5 +53,6 @@ jobs:
         name: build-artifacts-${{ matrix.os }}-java${{ matrix.java-version }}
         path: |
           build/libs/*.jar
+          build/libs/*-all.jar
           build/distributions/
         retention-days: 30
