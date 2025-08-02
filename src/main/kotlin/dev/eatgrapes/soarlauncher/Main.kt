@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
 
 fun main() = application {
     val windowState = rememberWindowState(
-        size = androidx.compose.ui.unit.DpSize(600.dp, 450.dp),
+        size = androidx.compose.ui.unit.DpSize(400.dp, 600.dp),
         position = WindowPosition.Aligned(Alignment.Center)
     )
 
@@ -85,78 +85,10 @@ fun main() = application {
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
-                        shape = RoundedCornerShape(16.dp), // 保持圆角
-                        color = MaterialTheme.colorScheme.surface // 移除半透明
+                        shape = RoundedCornerShape(25.dp),
+                        color = MaterialTheme.colorScheme.surface
                     ) {
                         Box(modifier = Modifier.fillMaxSize()) {
-
-                            NavigationRail(
-                                modifier = Modifier.fillMaxHeight().width(80.dp)
-                                    .align(Alignment.TopStart),
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                            ) {
-                                Spacer(modifier = Modifier.height(8.dp))
-
-    
-                                Box(
-                                    modifier = Modifier
-                                        .size(56.dp)
-                                        .background(
-                                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                                            shape = androidx.compose.foundation.shape.CircleShape
-                                        )
-    .align(Alignment.CenterHorizontally),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Image(
-                                        painter = painterResource("soar/logo.png"),
-                                        contentDescription = "Logo",
-                                        modifier = Modifier.size(52.dp)
-                                    )
-                                }
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                NavigationRailItem(
-                                    selected = selectedItem == "Home",
-                                    onClick = { selectedItem = "Home" },
-                                    icon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Home,
-                                            contentDescription = i18n.text("ui.home")
-                                        )
-                                    },
-                                    label = { Text(i18n.text("ui.home")) },
-                                    colors = NavigationRailItemDefaults.colors(
-                                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                )
-
-                                NavigationRailItem(
-                                    selected = selectedItem == "Settings",
-                                    onClick = { selectedItem = "Settings" },
-                                    icon = {
-                                        Icon(
-                                            imageVector = Icons.Default.Settings,
-                                            contentDescription = i18n.text("ui.settings")
-                                        )
-                                    },
-                                    label = { Text(i18n.text("ui.settings")) },
-                                    colors = NavigationRailItemDefaults.colors(
-                                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
-                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                )
-                            }
-
 
                             var isDragging by remember { mutableStateOf(false) }
                             var dragOffset by remember { mutableStateOf(androidx.compose.ui.geometry.Offset.Zero) }
@@ -240,7 +172,7 @@ fun main() = application {
     
                             Box(
                                 modifier = Modifier.fillMaxSize()
-                                    .padding(start = 80.dp)
+                                    .padding(bottom = 80.dp)
                                     .background(MaterialTheme.colorScheme.surface)
                                     .padding(16.dp),
                                 contentAlignment = Alignment.TopStart
@@ -252,6 +184,54 @@ fun main() = application {
                                         colorManager = colorManager
                                     )
                                 }
+                            }
+
+
+                            NavigationBar(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(80.dp)
+                                    .align(Alignment.BottomStart),
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            ) {
+                                NavigationBarItem(
+                                    selected = selectedItem == "Home",
+                                    onClick = { selectedItem = "Home" },
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Home,
+                                            contentDescription = i18n.text("ui.home")
+                                        )
+                                    },
+                                    label = { Text(i18n.text("ui.home")) },
+                                    colors = NavigationBarItemDefaults.colors(
+                                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                )
+
+                                NavigationBarItem(
+                                    selected = selectedItem == "Settings",
+                                    onClick = { selectedItem = "Settings" },
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Settings,
+                                            contentDescription = i18n.text("ui.settings")
+                                        )
+                                    },
+                                    label = { Text(i18n.text("ui.settings")) },
+                                    colors = NavigationBarItemDefaults.colors(
+                                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                )
                             }
                         }
                     }

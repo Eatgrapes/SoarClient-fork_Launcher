@@ -65,7 +65,7 @@ class ColorPalette(
         return hctToColor(Hct(hct.hue, hct.chroma * 0.3, tone))
     }
 
-    // 添加背景相关颜色方法
+
     fun getBackground(): Color {
         val tone = if (isDark) 6.0 else 98.0
         return hctToColor(Hct(0.0, 0.0, tone))

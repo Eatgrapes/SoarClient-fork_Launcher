@@ -19,3 +19,5 @@ ui.color.primary=主色
 ui.color.secondary=次色
 ui.color.tertiary=第三色
 ui.home.title=SoarClient-fork V8
+ui.home.launch=启动
+ui.home.subtitle=下一代PVP客户端

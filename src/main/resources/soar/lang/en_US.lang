@@ -19,3 +19,5 @@ ui.color.primary=Primary
 ui.color.secondary=Secondary
 ui.color.tertiary=Tertiary
 ui.home.title=SoarClient-fork V8
+ui.home.launch=Launch
+ui.home.subtitle=Next Generation PVP Client
