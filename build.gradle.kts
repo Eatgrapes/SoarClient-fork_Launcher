@@ -27,7 +27,7 @@ dependencies {
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
 
-    // Twelvemonkeys 图像库以支持 WebP 格式
+    // webp support
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
     implementation("com.twelvemonkeys.imageio:imageio-core:3.10.1")
     
