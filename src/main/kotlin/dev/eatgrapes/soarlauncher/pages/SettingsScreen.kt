@@ -20,14 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +36,8 @@ import dev.eatgrapes.soarlauncher.i18n.TranslationManager
 import dev.eatgrapes.soarlauncher.color.ColorManager
 import dev.eatgrapes.soarlauncher.components.ColorPicker
 import dev.eatgrapes.soarlauncher.config.ConfigManager
+import com.sun.management.OperatingSystemMXBean
+import java.lang.management.ManagementFactory
 
 @Composable
 fun SettingsScreen(
@@ -54,6 +49,17 @@ fun SettingsScreen(
     var colorExpanded by remember { mutableStateOf(false) }
     var showRestartDialog by remember { mutableStateOf(false) }
     var pendingLanguage by remember { mutableStateOf<String?>(null) }
+    
+    val totalMemoryGB = try {
+        val osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+        (osBean.totalPhysicalMemorySize / (1024 * 1024 * 1024)).coerceIn(1L, 32L)
+    } catch (e: Exception) {
+        16L
+    }
+    
+    var ramAllocation by remember { 
+        mutableStateOf(ConfigManager.getRamAllocation().coerceAtMost(totalMemoryGB.toInt())) 
+    }
 
     val availableLanguages = remember { TranslationManager.getAvailableLanguages() }
     val scrollState = rememberScrollState()
@@ -132,36 +138,30 @@ fun SettingsScreen(
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        availableLanguages.forEach { langCode ->
+                        availableLanguages.forEach { languageCode ->
                             Row(
-                                modifier = Modifier.fillMaxWidth().clickable {
-                                    if (selectedLanguage != langCode) {
-                                        pendingLanguage = langCode
-                                        selectedLanguage = langCode
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        selectedLanguage = languageCode
+                                        pendingLanguage = languageCode
                                         showRestartDialog = true
                                     }
-                                },
+                                    .padding(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 RadioButton(
-                                    selected = selectedLanguage == langCode,
+                                    selected = selectedLanguage == languageCode,
                                     onClick = {
-                                        if (selectedLanguage != langCode) {
-                                            pendingLanguage = langCode
-                                            selectedLanguage = langCode
-                                            showRestartDialog = true
-                                        }
+                                        selectedLanguage = languageCode
+                                        pendingLanguage = languageCode
+                                        showRestartDialog = true
                                     }
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = Language.getDisplayName(langCode),
-                                    fontWeight = FontWeight.Bold
-                                )
+                                Text(text = Language.getDisplayName(languageCode))
                             }
                         }
                     }
@@ -194,6 +194,7 @@ fun SettingsScreen(
                 }
             }
         }
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
@@ -231,6 +232,41 @@ fun SettingsScreen(
                         ColorPicker(colorManager = colorManager)
                     }
                 }
+            }
+        }
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = i18n.text("ui.ram_allocation"),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "${ramAllocation}GB",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Slider(
+                    value = ramAllocation.toFloat(),
+                    onValueChange = { ramAllocation = it.toInt() },
+                    valueRange = 1f..totalMemoryGB.toFloat(),
+                    steps = (totalMemoryGB.toInt() - 2).coerceAtLeast(0),
+                    onValueChangeFinished = {
+                        ConfigManager.setRamAllocation(ramAllocation)
+                    }
+                )
             }
         }
     }

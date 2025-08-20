@@ -10,6 +10,7 @@ object ConfigManager {
     
     private const val KEY_DARK_MODE = "ui.dark_mode"
     private const val KEY_SELECTED_COLOR = "ui.selected_color"
+    private const val KEY_RAM_ALLOCATION = "game.ram_allocation"
     
     init {
         loadConfig()
@@ -40,6 +41,15 @@ object ConfigManager {
     
     fun setSelectedColor(color: String) {
         properties.setProperty(KEY_SELECTED_COLOR, color)
+        saveConfig()
+    }
+
+    fun getRamAllocation(): Int {
+        return properties.getProperty(KEY_RAM_ALLOCATION, "4").toIntOrNull() ?: 4
+    }
+
+    fun setRamAllocation(gb: Int) {
+        properties.setProperty(KEY_RAM_ALLOCATION, gb.toString())
         saveConfig()
     }
 }

@@ -16,13 +16,24 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.8.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation("org.apache.commons:commons-compress:1.26.0")
+    implementation("net.coobird:thumbnailator:0.4.17")
+
+    implementation(compose.desktop.currentOs)
     implementation(compose.material3)
     implementation(compose.materialIconsExtended)
+
+    // Twelvemonkeys 图像库以支持 WebP 格式
+    implementation("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
+    implementation("com.twelvemonkeys.imageio:imageio-core:3.10.1")
     
-    implementation("org.apache.commons:commons-compress:1.26.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     
-    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.21")
 }
 
 tasks.test {
@@ -34,8 +45,8 @@ compose.desktop {
         mainClass = "dev.eatgrapes.soarlauncher.MainKt"
         
         jvmArgs += listOf(
-            "-Xmx2g",
-            "-Xms512m",
+            "-Xmx1g",
+            "-Xms256m",
             "-XX:+UseG1GC",
             "-XX:+UseStringDeduplication",
             "-XX:+OptimizeStringConcat",
