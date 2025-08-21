@@ -30,8 +30,8 @@ dependencies {
     // webp support
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.10.1")
     implementation("com.twelvemonkeys.imageio:imageio-core:3.10.1")
-    
-    
+    implementation("com.github.oshi:oshi-core:6.4.11")
+
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.21")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.1.21")
 }
@@ -53,8 +53,27 @@ compose.desktop {
             "-XX:+UseCompressedOops",
             "-XX:MaxGCPauseMillis=100",
             "-Dskiko.render.api=OPENGL",
-            "-Dskiko.fallback.render.api=SOFTWARE"
+            "-Dskiko.fallback.render.api=SOFTWARE",
+            "--add-exports=java.base/sun.security.action=ALL-UNNAMED",
+            "--add-exports=java.management/sun.management=ALL-UNNAMED",
+            "--add-exports=jdk.management/com.sun.management.internal=ALL-UNNAMED",
+            "--add-opens=java.base/java.lang=ALL-UNNAMED",
+            "--add-opens=java.base/java.util=ALL-UNNAMED"
         )
+
+        nativeDistributions {
+            targetFormats(org.jetbrains.compose.desktop.application.dsl.TargetFormat.Msi)
+
+            windows {
+                packageName = "Soar-Fork Client Launcher"
+                packageVersion = "1.0.0"
+                menuGroup = "SoarClient-Fork Team"
+                upgradeUuid = "9178b83d-8de5-458c-8395-febfc72c0121"
+                shortcut = true
+                menu = true
+                iconFile.set(project.file("src/main/resources/soar/logo.ico"))
+            }
+        }
     }
 }
 
