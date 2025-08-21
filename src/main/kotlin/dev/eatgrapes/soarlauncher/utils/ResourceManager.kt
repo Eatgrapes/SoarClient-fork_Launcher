@@ -19,6 +19,22 @@ import java.util.zip.ZipFile
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 
+/**
+ * 用于描述一个已安装 Mod 的数据类
+ * @param id Mod 的唯一标识符
+ * @param version Mod 的版本
+ * @param name Mod 的显示名称
+ * @param enabled Mod 是否启用 (通过文件扩展名判断)
+ * @param file Mod 的 JAR 文件
+ */
+data class ModInfo(
+    val id: String,
+    val version: String,
+    val name: String,
+    val enabled: Boolean,
+    val file: File
+)
+
 object ResourceManager {
     const val ASSETS_FOLDER = "soar_assets"
     private const val JAVA_VERSION = "21.0.7"
@@ -720,5 +736,54 @@ object ResourceManager {
             }
         }
         throw lastException ?: RuntimeException("Failed to download $url after 3 attempts")
+    }
+
+    // --- Mod Management Functions ---
+
+    private val modsDir by lazy { File(ASSETS_FOLDER, "versions/mods") }
+
+    /**
+     * 扫描并返回所有已安装的 Mod 列表。
+     * 它会读取每个 .jar 文件中的 fabric.mod.json 来获取详细信息。
+     *
+     * @return ModInfo 对象的列表
+     */
+    fun getInstalledMods(): List<ModInfo> {
+        if (!modsDir.exists() || !modsDir.isDirectory) {
+            return emptyList()
+        }
+
+        // 筛选出 .jar 和 .jar.disabled 文件
+        return modsDir.listFiles { _, name -> name.endsWith(".jar") || name.endsWith(".jar.disabled") }
+            ?.mapNotNull { file ->
+                try {
+                    parseModInfo(file)
+                } catch (e: Exception) {
+                    // 如果文件损坏或不是一个有效的 Mod JAR，则忽略
+                    println("Failed to parse mod info from ${file.name}: ${e.message}")
+                    null
+                }
+            } ?: emptyList()
+    }
+
+    /**
+     * 从单个 JAR 文件中解析 Mod 信息。
+     * @param file Mod 的 JAR 文件
+     * @return 解析成功则返回 ModInfo，否则返回 null
+     */
+    private fun parseModInfo(file: File): ModInfo? {
+        ZipFile(file).use { zip ->
+            val entry = zip.getEntry("fabric.mod.json") ?: return null // 确保是 Fabric Mod
+            val mapper = ObjectMapper()
+            val jsonNode = zip.getInputStream(entry).use { mapper.readTree(it) }
+
+            val modId = jsonNode.get("id")?.asText() ?: file.nameWithoutExtension
+            val version = jsonNode.get("version")?.asText() ?: "N/A"
+            val name = jsonNode.get("name")?.asText() ?: modId
+            // 启用状态取决于文件名是否以 .jar 结尾
+            val isEnabled = file.name.endsWith(".jar")
+
+            return ModInfo(modId, version, name, isEnabled, file)
+        }
     }
 }

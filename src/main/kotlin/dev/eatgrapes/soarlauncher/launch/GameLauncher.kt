@@ -43,7 +43,7 @@ object GameLauncher {
 
                 val classpath = buildClasspath(libPath.toFile(), gameJar, modsPath.toFile())
 
-                val username = "Player${Random.nextInt(1000, 9999)}"
+                val username = ConfigManager.getPlayerName()
                 val uuid = generateRandomUUID()
 
                 val command = buildLaunchCommand(

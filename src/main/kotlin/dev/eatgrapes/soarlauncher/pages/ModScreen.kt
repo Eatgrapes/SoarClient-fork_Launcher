@@ -43,7 +43,7 @@ import javax.imageio.spi.ImageReaderSpi
 
 @Composable
 fun ModScreen() {
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableStateOf(1) }
     var searchQuery by remember { mutableStateOf("") }
     var showSearch by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }

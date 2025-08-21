@@ -2,18 +2,19 @@ package dev.eatgrapes.soarlauncher.pages
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.eatgrapes.soarlauncher.config.ConfigManager
 import dev.eatgrapes.soarlauncher.i18n.i18n
 
-//啊LazyChara我真的好喜欢你啊🥰️❤️❤️❤️为了你我变成狼人模样🐀🐀🐀为了你😭😭染上了疯狂😈😈😈为了你😭😭😭穿上了厚厚的伪装🐀🐀🐀
-//为了你😰😰😰换了心肠🥵🐀🐀🐀
-//我们还能不能再见面😭😭😭我在佛前苦苦求了几千年💀💀💀💀
 @Composable
-fun ProfileScreen() { Column(
+fun ProfileScreen() {
+    var playerName by remember { mutableStateOf(ConfigManager.getPlayerName()) }
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
@@ -26,9 +27,22 @@ fun ProfileScreen() { Column(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = playerName,
+            onValueChange = {
+                playerName = it
+                ConfigManager.setPlayerName(it)
+            },
+            label = { Text(i18n.text("profile.playerName")) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(0.8f)
+        )
+
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = ("我喜欢你。"),
+            text = i18n.text("profile.description"),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

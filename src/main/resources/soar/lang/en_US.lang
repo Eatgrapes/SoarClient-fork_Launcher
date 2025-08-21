@@ -59,3 +59,5 @@ ui.mods.error=Error
 ui.mods.no_mods_found=No mods found
 ui.mods.no_installed_mods=No installed mods
 ui.profile=Profile
+profile.playerName=PlayerName
+profile.description=Crack login

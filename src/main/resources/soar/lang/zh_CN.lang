@@ -59,3 +59,5 @@ ui.mods.error=错误
 ui.mods.no_mods_found=未找到模组
 ui.mods.no_installed_mods=未安装模组
 ui.profile=个人资料
+profile.playerName=玩家名称
+profile.description=我喜欢你。我想操你。

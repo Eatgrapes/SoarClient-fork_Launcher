@@ -11,6 +11,7 @@ object ConfigManager {
     private const val KEY_DARK_MODE = "ui.dark_mode"
     private const val KEY_SELECTED_COLOR = "ui.selected_color"
     private const val KEY_RAM_ALLOCATION = "game.ram_allocation"
+    private const val KEY_PLAYER_NAME = "game.player_name"
     
     init {
         loadConfig()
@@ -50,6 +51,15 @@ object ConfigManager {
 
     fun setRamAllocation(gb: Int) {
         properties.setProperty(KEY_RAM_ALLOCATION, gb.toString())
+        saveConfig()
+    }
+
+    fun getPlayerName(): String {
+        return properties.getProperty(KEY_PLAYER_NAME, "Player")
+    }
+
+    fun setPlayerName(name: String) {
+        properties.setProperty(KEY_PLAYER_NAME, name)
         saveConfig()
     }
 }

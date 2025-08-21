@@ -62,8 +62,8 @@ fun HomeScreen(
                 }
                 
                 val modsDir = java.nio.file.Paths.get(ResourceManager.ASSETS_FOLDER, "versions", "mods").toFile()
-                val fabricApiFile = java.io.File(modsDir, "fabric-api-0.119.4+1.21.4.jar")
-                if (!fabricApiFile.exists()) {
+                val fabricApiExists = modsDir.listFiles()?.any { it.name.startsWith("fabric-api") } ?: false
+                if (!fabricApiExists) {
                     updateDialogMessage(i18n.text("ui.home.fabric_api_not_found"))
                     var downloadCompleted = false
                     var downloadError = false
@@ -198,8 +198,8 @@ fun HomeScreen(
                         isProcessing = true
                         
                         val modsDir = java.nio.file.Paths.get(ResourceManager.ASSETS_FOLDER, "versions", "mods").toFile()
-                        val fabricApiFile = java.io.File(modsDir, "fabric-api-0.119.4+1.21.4.jar")
-                        if (!fabricApiFile.exists()) {
+                        val fabricApiExists = modsDir.listFiles()?.any { it.name.startsWith("fabric-api") } ?: false
+                        if (!fabricApiExists) {
                             downloadProgress = downloadProgress.copy(
                                 state = DownloadState.DOWNLOADING,
                                 message = i18n.text("ui.home.downloading_fabric_api")
